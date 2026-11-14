@@ -1,0 +1,45 @@
+# Used by Nixpacks in place of its default SPA Caddyfile. Identical to the
+# default except that prerendered pages (dist/<route>/index.html) are served
+# for their clean URLs, old URLs redirect, and unknown URLs return a real 404.
+
+# global options
+{
+	admin off
+	persist_config off
+	auto_https off
+	log {
+		format json
+	}
+	servers {
+		trusted_proxies static private_ranges 100.0.0.0/8
+	}
+}
+
+:{$PORT:3000} {
+	log {
+		format json
+	}
+
+	respond /health 200
+
+	root * ../app/{$NIXPACKS_SPA_OUTPUT_DIR}
+
+	encode gzip
+
+	# URLs from the previous site
+	redir /team / permanent
+	redir /scalp-spa / permanent
+	redir /location/* / permanent
+
+	# Serve the file, then the prerendered page for that route
+	try_files {path} {path}/index.html /404.html
+
+	@missing path /404.html
+	handle @missing {
+		file_server {
+			status 404
+		}
+	}
+
+	file_server
+}

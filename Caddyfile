@@ -20,8 +20,6 @@
 		format json
 	}
 
-	respond /health 200
-
 	root * ../app/{$NIXPACKS_SPA_OUTPUT_DIR}
 
 	encode gzip
@@ -31,15 +29,19 @@
 	redir /scalp-spa / permanent
 	redir /location/* / permanent
 
-	# Serve the file, then the prerendered page for that route
-	try_files {path} {path}/index.html /404.html
+	route {
+		respond /health 200
 
-	@missing path /404.html
-	handle @missing {
-		file_server {
-			status 404
+		# Serve the file, then the prerendered page for that route
+		try_files {path} {path}/index.html /404.html
+
+		@missing path /404.html
+		handle @missing {
+			file_server {
+				status 404
+			}
 		}
-	}
 
-	file_server
+		file_server
+	}
 }

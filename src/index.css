@@ -1,68 +1,161 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 34 33% 98%;
-    --foreground: 27 20% 25%;
-    --card: 0 0% 100%;
-    --card-foreground: 27 20% 25%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 27 20% 25%;
-    --primary: 27 35% 82%;
-    --primary-foreground: 27 20% 25%;
-    --secondary: 27 100% 99%;
-    --secondary-foreground: 27 20% 25%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 27 25% 44%;
-    --accent: 35 57% 84%;
-    --accent-foreground: 27 20% 25%;
+    --background: 20 16% 4%;
+    --foreground: 32 44% 92%;
+    --card: 26 20% 7%;
+    --card-foreground: 32 44% 92%;
+    --popover: 26 20% 7%;
+    --popover-foreground: 32 44% 92%;
+    --primary: 32 35% 70%;
+    --primary-foreground: 20 16% 4%;
+    --secondary: 26 20% 7%;
+    --secondary-foreground: 32 44% 92%;
+    --muted: 25 21% 11%;
+    --muted-foreground: 32 15% 60%;
+    --accent: 32 35% 70%;
+    --accent-foreground: 20 16% 4%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 27 20% 88%;
-    --input: 27 20% 88%;
-    --ring: 27 20% 25%;
-    --radius: 0.75rem;
+    --border: 32 20% 20%;
+    --input: 32 20% 20%;
+    --ring: 32 35% 70%;
+    --radius: 0.25rem;
   }
 
   * {
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
-    @apply bg-background text-foreground antialiased;
-    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
+    @apply bg-ink font-sans font-light text-cream antialiased;
   }
 
-  .glass {
-    @apply bg-white/80 backdrop-blur-md border border-white/20;
+  ::selection {
+    @apply bg-champagne text-ink;
+  }
+
+  :focus-visible {
+    @apply outline outline-2 outline-offset-4 outline-champagne;
   }
 }
 
-.location-card {
-  @apply relative overflow-hidden rounded-2xl bg-white p-6 shadow-lg transition-all duration-300 hover:shadow-xl;
-}
-
-.service-card {
-  @apply rounded-xl bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-md;
-}
-
-.animate-on-scroll {
-  @apply opacity-0 translate-y-4 transition-all duration-700;
-}
-
-.animate-on-scroll.is-visible {
-  @apply opacity-100 translate-y-0;
-}
-
-@layer base {
-  * {
-    @apply border-border;
+@layer components {
+  /* Small tracked uppercase label */
+  .eyebrow {
+    @apply text-[0.68rem] font-medium uppercase tracking-label text-champagne;
   }
-  body {
-    @apply bg-background text-foreground;
+
+  .display {
+    @apply font-sans font-light leading-[1.02] tracking-[-0.035em];
+  }
+
+  .accent {
+    @apply font-serif font-normal italic tracking-[-0.01em] text-champagne;
+  }
+
+  .btn {
+    @apply inline-flex min-h-[3.25rem] items-center justify-center gap-3 px-7 text-[0.72rem] font-medium uppercase tracking-label transition-all duration-300;
+  }
+
+  .btn-gold {
+    @apply btn bg-gradient-to-b from-champagne-light to-champagne text-ink hover:from-white hover:to-champagne-light;
+  }
+
+  .btn-ghost {
+    @apply btn border border-cream/40 text-cream hover:border-champagne hover:bg-champagne hover:text-ink;
+  }
+
+  .btn-dark {
+    @apply btn bg-ink text-cream hover:bg-mocha;
+  }
+
+  .link-arrow {
+    @apply inline-flex items-center gap-2 text-[0.7rem] font-medium uppercase tracking-label text-cream transition-colors duration-300 hover:text-champagne;
+  }
+
+  .hairline {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-champagne/40 to-transparent;
+  }
+
+  /* Warm, moody grade so every photo sits in the same world */
+  .img-lux {
+    filter: saturate(0.72) sepia(0.2) contrast(1.06) brightness(0.86);
+  }
+}
+
+/* Scroll reveal. Only hides content when JS is running, so crawlers and
+   no-JS visitors always get the full page. */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.js .reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Subtle film grain over dark sections */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.hero-fade {
+  background: linear-gradient(to top, #0b0908 0%, rgba(11, 9, 8, 0.92) 50%, rgba(11, 9, 8, 0.25) 78%, rgba(11, 9, 8, 0.45) 100%);
+}
+@media (min-width: 1024px) {
+  .hero-fade {
+    background: linear-gradient(
+      to right,
+      #15110e 0%,
+      #15110e 30%,
+      rgba(21, 17, 14, 0.88) 44%,
+      rgba(21, 17, 14, 0.45) 62%,
+      rgba(21, 17, 14, 0.12) 100%
+    );
+  }
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
   }
 }

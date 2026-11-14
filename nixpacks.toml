@@ -1,0 +1,4 @@
+# Nixpacks ignores a project Caddyfile for Vite SPAs and always starts Caddy with
+# its own generated one. Point Caddy at ours so prerendered pages are served.
+[start]
+cmd = "exec caddy run --config /app/Caddyfile --adapter caddyfile 2>&1"

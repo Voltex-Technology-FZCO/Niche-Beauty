@@ -1,4 +1,4 @@
-# Used by Nixpacks in place of its default SPA Caddyfile. Identical to the
+# Started by nixpacks.toml in place of the default Nixpacks SPA Caddyfile. Same as the
 # default except that prerendered pages (dist/<route>/index.html) are served
 # for their clean URLs, old URLs redirect, and unknown URLs return a real 404.
 
